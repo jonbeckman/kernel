@@ -51,9 +51,12 @@ if [ "$FLAVOR" = "system" ]; then
     # latency (see the config comment); a future KERNEL_VERSION that drops
     # the voluntary choice must fail loudly here rather than silently fall
     # back to lazy/full.
+    # The TPROXY target and socket match back local Cloudflare Containers'
+    # egress sidecar; their loss only surfaces when a container starts.
     ASSERT_Y="CONFIG_SQUASHFS_DECOMP_MULTI_PERCPU CONFIG_IP_NF_NAT
               CONFIG_IP6_NF_NAT CONFIG_HZ_1000 CONFIG_PSI_DEFAULT_DISABLED
-              CONFIG_PREEMPT_VOLUNTARY"
+              CONFIG_PREEMPT_VOLUNTARY CONFIG_NETFILTER_XT_TARGET_TPROXY
+              CONFIG_NETFILTER_XT_MATCH_SOCKET"
     ASSERT_N=""
 elif [ "$FLAVOR" = "microvm" ]; then
     CONFIG_FILE="$CONFIG_DIR/arcbox-microvm-$TARGET_ARCH.config"
